@@ -4,13 +4,14 @@ import 'package:http/http.dart' as http;
 import 'http_exception.dart';
 
 class Authentication with ChangeNotifier {
-  Future<void> signUp(String email, String password) async {
+  Future<void> signUp(String name, String email, String password) async {
     const url =
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBaRGGhKqOF41GadkJ3OJpqU3ehGYZPZas';
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDW7Nez_GP-vSMDg2iE6vEfmljIYhr9UTc';
 
     try {
       final response = await http.post(url,
           body: json.encode({
+            'name': name,
             'email': email,
             'password': password,
             'returnSecureToken': true,

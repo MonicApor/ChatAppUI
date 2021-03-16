@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import './modules/authentication.dart';
+
 import './screens/home_screen.dart';
 import './screens/login.dart';
 import './screens/register.dart';
 import './screens/welcome.dart';
+
+import './modules/authentication.dart';
 
 void main() {
   runApp(MyApp());

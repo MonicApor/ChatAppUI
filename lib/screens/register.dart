@@ -42,7 +42,7 @@ class RegisterScreenState extends State<RegisterScreen> {
 
     try {
       await Provider.of<Authentication>(context, listen: false)
-          .logIn(_authData['email'], _authData['password']);
+          .signUp(_authData['name'], _authData['email'], _authData['password']);
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
@@ -205,7 +205,7 @@ class RegisterScreenState extends State<RegisterScreen> {
             keyboardType: TextInputType.name,
             validator: (value) {
               if (value.isEmpty || value != _passwordController.text) {
-                return 'invalid password';
+                return 'Invalid Password';
               }
               return null;
             },

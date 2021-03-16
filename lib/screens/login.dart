@@ -1,12 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_chat_app/modules/authentication.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/login';
+
   LoginScreenState createState() {
     return LoginScreenState();
   }
 }
 
 class LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  Map<String, String> _authData = {'email': '', 'password': ''};
+
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('An Error Occured'),
+              content: Text(msg),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Okay'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+
+    try {
+      await Provider.of<Authentication>(context, listen: false)
+          .logIn(_authData['email'], _authData['password']);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } catch (error) {
+      var errorMessage = 'Authentication Failed. Please try again later.';
+      _showErrorDialog(errorMessage);
+    }
+  }
+
   buildEmailInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,8 +63,17 @@ class LoginScreenState extends State<LoginScreen> {
         Container(
           alignment: Alignment.centerLeft,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.name,
+            validator: (value) {
+              if (value.isEmpty || !value.contains('@')) {
+                return 'invalid email';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _authData['email'] = value;
+            },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -57,9 +108,18 @@ class LoginScreenState extends State<LoginScreen> {
         Container(
           alignment: Alignment.centerLeft,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
             obscureText: true,
             keyboardType: TextInputType.name,
+            validator: (value) {
+              if (value.isEmpty || value.length <= 5) {
+                return 'invalid password';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _authData['password'] = value;
+            },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -85,8 +145,7 @@ class LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       child: RaisedButton(
         onPressed: () {
-          Navigator.pushNamed(
-              context, '/home_screen'); //redirect  to home if valid login
+          _submit();
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

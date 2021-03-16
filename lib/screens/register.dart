@@ -1,12 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_chat_app/modules/authentication.dart';
+import 'home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
+  static const routeName = '/register';
+
   RegisterScreenState createState() {
     return RegisterScreenState();
   }
 }
 
 class RegisterScreenState extends State<RegisterScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  TextEditingController _passwordController = new TextEditingController();
+
+  Map<String, String> _authData = {'name': '', 'email': '', 'password': ''};
+
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text('An Error Occured'),
+              content: Text(msg),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Okay'),
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+
+    try {
+      await Provider.of<Authentication>(context, listen: false)
+          .logIn(_authData['email'], _authData['password']);
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+    } catch (error) {
+      var errorMessage = 'Authentication Failed. Please try again later.';
+      _showErrorDialog(errorMessage);
+    }
+  }
+
   buildEmailInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -21,8 +64,17 @@ class RegisterScreenState extends State<RegisterScreen> {
         Container(
           alignment: Alignment.centerLeft,
           height: 60.0,
-          child: TextField(
-            keyboardType: TextInputType.name,
+          child: TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            validator: (value) {
+              if (value.isEmpty || !value.contains('@')) {
+                return 'invalid email';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _authData['email'] = value;
+            },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -57,8 +109,17 @@ class RegisterScreenState extends State<RegisterScreen> {
         Container(
           alignment: Alignment.centerLeft,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
             keyboardType: TextInputType.name,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'invalid name';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _authData['name'] = value;
+            },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -93,9 +154,19 @@ class RegisterScreenState extends State<RegisterScreen> {
         Container(
           alignment: Alignment.centerLeft,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
             obscureText: true,
             keyboardType: TextInputType.name,
+            controller: _passwordController,
+            validator: (value) {
+              if (value.isEmpty || value.length <= 5) {
+                return 'invalid password';
+              }
+              return null;
+            },
+            onSaved: (value) {
+              _authData['password'] = value;
+            },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -129,9 +200,16 @@ class RegisterScreenState extends State<RegisterScreen> {
         Container(
           alignment: Alignment.centerLeft,
           height: 60.0,
-          child: TextField(
+          child: TextFormField(
             obscureText: true,
             keyboardType: TextInputType.name,
+            validator: (value) {
+              if (value.isEmpty || value != _passwordController.text) {
+                return 'invalid password';
+              }
+              return null;
+            },
+            onSaved: (value) {},
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
@@ -158,8 +236,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          Navigator.pushNamed(
-              context, '/home'); //redirect  to home if valid login
+          _submit();
         },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(

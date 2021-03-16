@@ -3,6 +3,8 @@ import 'package:flutter_chat_app/models/message_model.dart';
 import 'package:flutter_chat_app/screens/chat_screen.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const routeName = '/home';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

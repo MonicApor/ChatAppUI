@@ -1,39 +1,27 @@
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_chat_app/modules/authentication.dart';
-import 'home_screen.dart';
+import 'package:flutter_chat_app/screens/login.dart';
+import 'package:flutter_chat_app/modules/auth_service.dart';
+//import 'package:flutter_chat_app/modules/auth_service.dart';
 
-class RegisterScreen extends StatefulWidget {
-  static const routeName = '/register';
+// import 'package:provider/provider.dart';
 
-  RegisterScreenState createState() {
-    return RegisterScreenState();
-  }
+class SignupScreen extends StatefulWidget {
+  static const routeName = '/signup';
+  @override
+  SignupScreenState createState() => SignupScreenState();
 }
 
-class RegisterScreenState extends State<RegisterScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  TextEditingController _passwordController = new TextEditingController();
+class SignupScreenState extends State<SignupScreen> {
+  final _key = GlobalKey<FormState>();
 
-  Map<String, String> _authData = {'name': '', 'email': '', 'password': ''};
+  final AuthenticationService _auth = AuthenticationService();
 
-  void _showErrorDialog(String msg) {
-    showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text('An Error Occured'),
-              content: Text(msg),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                  },
-                )
-              ],
-            ));
-  }
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
+<<<<<<< HEAD:lib/screens/register.dart
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -47,6 +35,20 @@ class RegisterScreenState extends State<RegisterScreen> {
     } catch (error) {
       var errorMessage = 'Authentication Failed. Please try again later.';
       _showErrorDialog(errorMessage);
+=======
+  void createUser() async {
+    dynamic result = await _auth.createNewUser(
+        _nameController.text, _emailController.text, _passwordController.text);
+    if (result == null) {
+      print('Email is not valid');
+    } else {
+      print(result.toString());
+      _nameController.clear();
+      _passwordController.clear();
+      _emailController.clear();
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
+>>>>>>> f17a5c5... Sign In,Sign Up, & SignOut:lib/screens/signup.dart
     }
   }
 
@@ -65,15 +67,12 @@ class RegisterScreenState extends State<RegisterScreen> {
           alignment: Alignment.centerLeft,
           height: 60.0,
           child: TextFormField(
-            keyboardType: TextInputType.emailAddress,
+            controller: _emailController,
             validator: (value) {
-              if (value.isEmpty || !value.contains('@')) {
-                return 'invalid email';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _authData['email'] = value;
+              if (value.isEmpty) {
+                return 'Name cannot be empty';
+              } else
+                return null;
             },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -110,15 +109,12 @@ class RegisterScreenState extends State<RegisterScreen> {
           alignment: Alignment.centerLeft,
           height: 60.0,
           child: TextFormField(
-            keyboardType: TextInputType.name,
+            controller: _nameController,
             validator: (value) {
               if (value.isEmpty) {
-                return 'invalid name';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _authData['name'] = value;
+                return 'Name cannot be empty';
+              } else
+                return null;
             },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -156,16 +152,17 @@ class RegisterScreenState extends State<RegisterScreen> {
           height: 60.0,
           child: TextFormField(
             obscureText: true,
-            keyboardType: TextInputType.name,
+            // onChanged: (value) {
+            //   setState(() {
+            //     _password = value.trim();
+            //   });
+            // },
             controller: _passwordController,
             validator: (value) {
-              if (value.isEmpty || value.length <= 5) {
-                return 'invalid password';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _authData['password'] = value;
+              if (value.isEmpty) {
+                return 'Password cannot be empty';
+              } else
+                return null;
             },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -186,6 +183,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+<<<<<<< HEAD:lib/screens/register.dart
   buildConfirmPassInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,22 +227,21 @@ class RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+=======
+>>>>>>> f17a5c5... Sign In,Sign Up, & SignOut:lib/screens/signup.dart
   buildRegisterBtn() {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
-          _submit();
-        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
         ),
         color: Colors.white,
         child: Text(
-          'REGISTER',
+          'SIGN UP',
           style: TextStyle(
             color: Color(0xFF009688),
             letterSpacing: 2.0,
@@ -253,6 +250,31 @@ class RegisterScreenState extends State<RegisterScreen> {
             fontFamily: 'OpenSans',
           ),
         ),
+        // onPressed: () {
+        //   auth
+        //       .createUserWithEmailAndPassword(
+        //           email: _email, password: _password)
+        //       .then((_) {
+        //     Navigator.of(context).pushReplacement(
+        //         MaterialPageRoute(builder: (context) => LoginScreen()));
+        //   });
+        // },
+        onPressed: () {
+          _auth.createNewUser(_nameController.text, _emailController.text,
+              _passwordController.text);
+          if (_auth.createNewUser(_nameController.text, _emailController.text,
+                  _passwordController.text) ==
+              null) {
+            print('Email is not valid');
+          } else {
+            // print(result.toString());
+            _nameController.clear();
+            _passwordController.clear();
+            _emailController.clear();
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => LoginScreen()));
+          }
+        },
       ),
     );
   }
@@ -265,6 +287,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       ),
       home: Scaffold(
         body: Stack(
+          key: _key,
           children: <Widget>[
             Container(
                 height: double.infinity,
@@ -293,7 +316,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      'Register',
+                      'SIGN UP',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30.0,
@@ -303,21 +326,17 @@ class RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       height: 35.0,
                     ),
-                    buildEmailInput(),
+                    buildNameInput(),
                     SizedBox(
                       height: 15.0,
                     ),
-                    buildNameInput(),
+                    buildEmailInput(),
                     SizedBox(
                       height: 15.0,
                     ),
                     buildPasswordInput(),
                     SizedBox(
                       height: 15.0,
-                    ),
-                    buildConfirmPassInput(),
-                    SizedBox(
-                      height: 20.0,
                     ),
                     buildRegisterBtn(),
                   ],
@@ -329,4 +348,8 @@ class RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+}
+
+class FirestoreAuth {
+  static var instance;
 }

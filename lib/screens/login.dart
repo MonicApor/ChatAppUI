@@ -1,51 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_chat_app/modules/authentication.dart';
-import 'home_screen.dart';
+import 'package:flutter_chat_app/modules/auth_service.dart';
+import 'package:flutter_chat_app/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
-
-  LoginScreenState createState() {
-    return LoginScreenState();
-  }
+  @override
+  LoginScreenState createState() => LoginScreenState();
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  // final _key = GlobalKey<FormState>();
 
-  Map<String, String> _authData = {'email': '', 'password': ''};
+  final AuthenticationService _auth = AuthenticationService();
 
-  void _showErrorDialog(String msg) {
-    showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text('An Error Occured'),
-              content: Text(msg),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Okay'),
-                  onPressed: () {
-                    Navigator.of(ctx).pop();
-                  },
-                )
-              ],
-            ));
-  }
+  TextEditingController _emailContoller = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _submit() async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-    _formKey.currentState.save();
-
-    try {
-      await Provider.of<Authentication>(context, listen: false)
-          .logIn(_authData['email'], _authData['password']);
+  void signInUser() async {
+    dynamic authResult =
+        await _auth.loginUser(_emailContoller.text, _passwordController.text);
+    if (authResult == null) {
+      print('Sign in error. could not be able to login');
+    } else {
+      _emailContoller.clear();
+      _passwordController.clear();
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-    } catch (error) {
-      var errorMessage = 'Authentication Failed. Please try again later.';
-      _showErrorDialog(errorMessage);
     }
   }
 
@@ -64,15 +43,12 @@ class LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.centerLeft,
           height: 60.0,
           child: TextFormField(
-            keyboardType: TextInputType.name,
+            controller: _emailContoller,
             validator: (value) {
-              if (value.isEmpty || !value.contains('@')) {
-                return 'invalid email';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _authData['email'] = value;
+              if (value.isEmpty) {
+                return 'Email cannot be empty';
+              } else
+                return null;
             },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -109,16 +85,13 @@ class LoginScreenState extends State<LoginScreen> {
           alignment: Alignment.centerLeft,
           height: 60.0,
           child: TextFormField(
+            controller: _passwordController,
             obscureText: true,
-            keyboardType: TextInputType.name,
             validator: (value) {
-              if (value.isEmpty || value.length <= 5) {
-                return 'invalid password';
-              }
-              return null;
-            },
-            onSaved: (value) {
-              _authData['password'] = value;
+              if (value.isEmpty) {
+                return 'Password cannot be empty';
+              } else
+                return null;
             },
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
@@ -144,9 +117,6 @@ class LoginScreenState extends State<LoginScreen> {
       padding: EdgeInsets.symmetric(vertical: 25.0),
       width: double.infinity,
       child: RaisedButton(
-        onPressed: () {
-          _submit();
-        },
         padding: EdgeInsets.all(15.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.0),
@@ -162,6 +132,21 @@ class LoginScreenState extends State<LoginScreen> {
             fontFamily: 'OpenSans',
           ),
         ),
+        onPressed: () {
+          // if (_key.currentState.validate()) {
+          //   signInUser();
+          // }
+          _auth.loginUser(_emailContoller.text, _passwordController.text);
+          if (_auth.loginUser(_emailContoller.text, _passwordController.text) ==
+              null) {
+            print('Sign in error. could not be able to login');
+          } else {
+            _emailContoller.clear();
+            _passwordController.clear();
+            //Navigator.pushNamed(context, '/home');
+            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+          }
+        },
       ),
     );
   }

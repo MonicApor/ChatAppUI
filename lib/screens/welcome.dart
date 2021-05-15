@@ -73,7 +73,7 @@ class WelcomeScreen extends StatelessWidget {
                       width: double.infinity,
                       child: RaisedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/register');
+                          Navigator.pushNamed(context, '/signup');
                         },
                         padding: EdgeInsets.all(15.0),
                         shape: RoundedRectangleBorder(
@@ -81,7 +81,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         color: Colors.white,
                         child: Text(
-                          'REGISTER',
+                          'SIGN UP',
                           style: TextStyle(
                             color: Color(0xFF009688),
                             fontSize: 20.0,

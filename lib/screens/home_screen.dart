@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/message_model.dart';
 import 'package:flutter_chat_app/screens/chat_screen.dart';
+import 'package:flutter_chat_app/modules/auth_service.dart';
+import 'package:flutter_chat_app/screens/login.dart';
 
 class HomeScreen extends StatelessWidget {
+  final AuthenticationService _auth = AuthenticationService();
+
   static const routeName = '/home';
 
   @override
@@ -12,21 +16,16 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         brightness: Brightness.dark,
         elevation: 8,
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          color: Colors.white,
-          onPressed: () {},
-        ),
         title: Text(
           'Messages',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            color: Colors.white,
+            color: Colors.black,
             onPressed: () {},
           ),
         ],
@@ -152,6 +151,38 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
+      drawer: new Drawer(
+          child: Container(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Menu drawer'),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout,
+                size: 40,
+              ),
+              title: Text('Sign Out'),
+              onTap: () async {
+                await _auth.signOut().then((result) {
+                  //Navigator.of(context).pop(true);
+                  Navigator.of(context)
+                      .pushReplacementNamed(LoginScreen.routeName);
+                });
+              },
+            ),
+            ListTile(
+              title: Text('Second item'),
+              onTap: () {},
+            ),
+          ],
+        ),
+      )),
     );
   }
 }

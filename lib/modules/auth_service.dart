@@ -25,6 +25,7 @@ class AuthenticationService {
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+
       return result.user;
     } catch (e) {
       print(e.toString());
@@ -35,7 +36,7 @@ class AuthenticationService {
 
   Future signOut() async {
     try {
-      return _auth.signOut();
+      return await _auth.signOut();
     } catch (error) {
       print(error.toString());
       return null;

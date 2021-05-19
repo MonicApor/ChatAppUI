@@ -168,51 +168,25 @@ class SignupScreenState extends State<SignupScreen> {
   }
 
   buildRegisterBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        elevation: 5.0,
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+    return MaterialButton(
+      elevation: 0,
+      minWidth: double.maxFinite,
+      height: 50,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      onPressed: () {
+        createUser();
+      },
+      color: Colors.white,
+      child: Text(
+        'SIGN UP',
+        style: TextStyle(
+          color: Color(0xFF009688),
+          letterSpacing: 2.0,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
         ),
-        color: Colors.white,
-        child: Text(
-          'SIGN UP',
-          style: TextStyle(
-            color: Color(0xFF009688),
-            letterSpacing: 2.0,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-        // onPressed: () {
-        //   auth
-        //       .createUserWithEmailAndPassword(
-        //           email: _email, password: _password)
-        //       .then((_) {
-        //     Navigator.of(context).pushReplacement(
-        //         MaterialPageRoute(builder: (context) => LoginScreen()));
-        //   });
-        // },
-        onPressed: () {
-          _auth.createNewUser(_nameController.text, _emailController.text,
-              _passwordController.text);
-          if (_auth.createNewUser(_nameController.text, _emailController.text,
-                  _passwordController.text) ==
-              null) {
-            print('Email is not valid');
-          } else {
-            // print(result.toString());
-            _nameController.clear();
-            _passwordController.clear();
-            _emailController.clear();
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => LoginScreen()));
-          }
-        },
       ),
     );
   }
@@ -262,7 +236,7 @@ class SignupScreenState extends State<SignupScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 35.0,
+                      height: 30.0,
                     ),
                     buildNameInput(),
                     SizedBox(
@@ -274,7 +248,7 @@ class SignupScreenState extends State<SignupScreen> {
                     ),
                     buildPasswordInput(),
                     SizedBox(
-                      height: 15.0,
+                      height: 30.0,
                     ),
                     buildRegisterBtn(),
                   ],

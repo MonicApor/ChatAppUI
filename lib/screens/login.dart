@@ -113,40 +113,25 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   buildLoginBtn() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 25.0),
-      width: double.infinity,
-      child: RaisedButton(
-        padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.0),
+    return MaterialButton(
+      elevation: 0,
+      minWidth: double.maxFinite,
+      height: 50,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      onPressed: () {
+        signInUser();
+      },
+      color: Colors.white,
+      child: Text(
+        'LOGIN',
+        style: TextStyle(
+          color: Color(0xFF009688),
+          letterSpacing: 2.0,
+          fontSize: 20.0,
+          fontWeight: FontWeight.bold,
         ),
-        color: Colors.white,
-        child: Text(
-          'LOGIN',
-          style: TextStyle(
-            color: Color(0xFF009688),
-            letterSpacing: 2.0,
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'OpenSans',
-          ),
-        ),
-        onPressed: () {
-          // if (_key.currentState.validate()) {
-          //   signInUser();
-          // }
-          _auth.loginUser(_emailContoller.text, _passwordController.text);
-          if (_auth.loginUser(_emailContoller.text, _passwordController.text) ==
-              null) {
-            print('Sign in error. could not be able to login');
-          } else {
-            _emailContoller.clear();
-            _passwordController.clear();
-            //Navigator.pushNamed(context, '/home');
-            Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-          }
-        },
       ),
     );
   }
@@ -195,7 +180,7 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     SizedBox(
-                      height: 35.0,
+                      height: 30.0,
                     ),
                     buildEmailInput(),
                     SizedBox(
@@ -203,7 +188,7 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     buildPasswordInput(),
                     SizedBox(
-                      height: 15.0,
+                      height: 30.0,
                     ),
                     buildLoginBtn(),
                   ],

@@ -195,7 +195,7 @@ class SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primarySwatch: Colors.grey,
       ),
       home: Scaffold(
         body: Stack(

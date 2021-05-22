@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   firebase_auth: ^0.16.1
   cloud_firestore: ^0.13.7
+  material_floating_search_bar: ^0.2.6
 
 
 

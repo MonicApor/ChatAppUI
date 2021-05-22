@@ -140,7 +140,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.orange,
+        primaryColor: Colors.grey,
       ),
       home: Scaffold(
         body: Stack(

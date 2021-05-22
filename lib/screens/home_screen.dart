@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_app/models/message_model.dart';
+import 'package:flutter_chat_app/screens/search_screen.dart';
+import 'package:flutter_chat_app/screens/compose_screen.dart';
 import 'package:flutter_chat_app/screens/chat_screen.dart';
 import 'package:flutter_chat_app/modules/auth_service.dart';
 import 'package:flutter_chat_app/screens/login.dart';
@@ -14,19 +16,55 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Color(0xFF26A69A),
         brightness: Brightness.dark,
-        elevation: 8,
+        elevation: 0.0,
+        toolbarHeight: 75,
         title: Text(
           'Messages',
-          style: TextStyle(
-            color: Colors.black,
-          ),
+          style: TextStyle(color: Colors.white, fontSize: 22.0),
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            color: Colors.black,
-            onPressed: () {},
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 15.0),
+            child: Ink(
+              decoration: ShapeDecoration(
+                color: Color(0xFF80CBC4),
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => SearchScreen()));
+                },
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                iconSize: 20.0,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 15.0),
+            child: Ink(
+              decoration: ShapeDecoration(
+                color: Color(0xFF80CBC4),
+                shape: CircleBorder(),
+              ),
+              child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => ComposeScreen()));
+                },
+                icon: Icon(
+                  Icons.create,
+                  color: Colors.white,
+                ),
+                iconSize: 20.0,
+              ),
+            ),
           ),
         ],
       ),
@@ -45,7 +83,7 @@ class HomeScreen extends StatelessWidget {
             ),
             child: Container(
               padding: EdgeInsets.symmetric(
-                horizontal: 20,
+                horizontal: 30,
                 vertical: 15,
               ),
               child: Row(
@@ -57,7 +95,7 @@ class HomeScreen extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(40)),
                             border: Border.all(
                               width: 2,
-                              color: Theme.of(context).primaryColor,
+                              color: Color(0xFF26A69A),
                             ),
                             // shape: BoxShape.circle,
                             boxShadow: [
@@ -109,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                                         height: 7,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Theme.of(context).primaryColor,
+                                          color: Color(0xFF26A69A),
                                         ),
                                       )
                                     : Container(
@@ -120,7 +158,7 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               chat.time,
                               style: TextStyle(
-                                fontSize: 11,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w300,
                                 color: Colors.black54,
                               ),
@@ -135,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                           child: Text(
                             chat.text,
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 15,
                               color: Colors.black54,
                             ),
                             overflow: TextOverflow.ellipsis,
@@ -151,15 +189,15 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      drawer: new Drawer(
+      drawer: Drawer(
           child: Container(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('Menu drawer'),
+              child: Text("Add user icon + user's name & email here"),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Color(0xFF26A69A),
               ),
             ),
             ListTile(
@@ -175,10 +213,6 @@ class HomeScreen extends StatelessWidget {
                       .pushReplacementNamed(LoginScreen.routeName);
                 });
               },
-            ),
-            ListTile(
-              title: Text('Second item'),
-              onTap: () {},
             ),
           ],
         ),

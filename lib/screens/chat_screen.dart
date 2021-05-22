@@ -25,9 +25,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 maxWidth: MediaQuery.of(context).size.width * 0.80,
               ),
               padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: EdgeInsets.symmetric(vertical: 5),
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Color(0xFF26A69A),
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
@@ -52,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Text(
                       message.time,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: Colors.black45,
                       ),
                     ),
@@ -92,7 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 maxWidth: MediaQuery.of(context).size.width * 0.80,
               ),
               padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: EdgeInsets.symmetric(vertical: 5),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -137,7 +137,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Text(
                       message.time,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: Colors.black45,
                       ),
                     ),
@@ -189,7 +189,10 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFF6F6F6),
       appBar: AppBar(
+        backgroundColor: Color(0xFF26A69A),
         brightness: Brightness.dark,
+        elevation: 8,
+        toolbarHeight: 75,
         centerTitle: true,
         title: RichText(
           textAlign: TextAlign.center,
@@ -198,7 +201,7 @@ class _ChatScreenState extends State<ChatScreen> {
               TextSpan(
                   text: widget.user.name,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.w400,
                   )),
               TextSpan(text: '\n'),
@@ -206,14 +209,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? TextSpan(
                       text: 'Online',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),
                     )
                   : TextSpan(
                       text: 'Offline',
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: 13,
                         fontWeight: FontWeight.w400,
                       ),
                     )

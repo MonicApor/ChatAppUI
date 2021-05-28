@@ -23,9 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  firebase_auth: ^0.16.1
-  cloud_firestore: ^0.13.7
-  material_floating_search_bar: ^0.2.6
+  firebase_auth: ^1.0.1
+  firebase_core: ^1.0.2
+  shared_preferences: ^2.0.5
+  cloud_firestore: ^1.0.3
 
 
 

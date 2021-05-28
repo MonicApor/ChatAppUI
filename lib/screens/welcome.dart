@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_app/screens/login.dart';
+import 'package:flutter_chat_app/screens/signup.dart';
 
 class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -51,7 +53,10 @@ class WelcomeScreen extends StatelessWidget {
                       width: double.infinity,
                       child: RaisedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/login');
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
                         },
                         padding: EdgeInsets.all(15.0),
                         shape: RoundedRectangleBorder(
@@ -73,7 +78,10 @@ class WelcomeScreen extends StatelessWidget {
                       width: double.infinity,
                       child: RaisedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/signup');
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignupScreen()));
                         },
                         padding: EdgeInsets.all(15.0),
                         shape: RoundedRectangleBorder(
